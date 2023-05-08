@@ -33,11 +33,14 @@ class CRM_Sixlinesaddress_Helper {
         a.supplemental_address_2,
         a.city,
         a.postal_code,
-        a.country_id
+        a.country_id,
+        ctry.iso_code
       from
         civicrm_contact c
       left outer join
         civicrm_address a on a.contact_id = c.id
+      left outer join
+        civicrm_country ctry on ctry.id = a.country_id
       where
         c.id = %1
     ";
@@ -88,9 +91,16 @@ class CRM_Sixlinesaddress_Helper {
   }
 
   private static function addCountry($daoContact, &$addressLines, &$i) {
-    if (!empty($daoContact->country_id) && $daoContact->country_id != CRM_Core_BAO_Country::defaultContactCountry()) {
-      $addressLines[$i] = CRM_Core_PseudoConstant::country($daoContact->country_id);
-      $i++;
+    if (!empty($daoContact->country_id)) {
+      $defaultCountry = CRM_Core_BAO_Country::defaultContactCountry();
+
+      if ($daoContact->country_id == $defaultCountry || $daoContact->iso_code == $defaultCountry) {
+        // do nothing
+      }
+      else {
+        $addressLines[$i] = CRM_Core_PseudoConstant::country($daoContact->country_id);
+        $i++;
+      }
     }
   }
 
