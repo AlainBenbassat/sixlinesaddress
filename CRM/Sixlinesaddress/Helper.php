@@ -3,11 +3,11 @@
 class CRM_Sixlinesaddress_Helper {
   public static function get($contactId) {
     $addressLines = [
-      '<br>',
-      '<br>',
-      '<br>',
-      '<br>',
-      '<br>',
+      '',
+      '',
+      '',
+      '',
+      '',
       '',
     ];
 
@@ -19,6 +19,8 @@ class CRM_Sixlinesaddress_Helper {
     self::addStreet($daoContact, $addressLines, $i);
     self::addPostalCodeAndCity($daoContact, $addressLines, $i);
     self::addCountry($daoContact, $addressLines, $i);
+
+    return implode('<br>', $addressLines);
   }
 
   private static function getContact($contactId) {
@@ -54,34 +56,33 @@ class CRM_Sixlinesaddress_Helper {
 
   private static function addName($daoContact, &$addressLines, &$i) {
     $addressLines[$i] = empty($daoContact->addressee_custom) ? $daoContact->addressee_display : $daoContact->addressee_custom;
-    $addressLines[$i] .= '<br>';
     $i++;
   }
 
   private static function addSupplementalAddress1($daoContact, &$addressLines, &$i) {
     if (!empty($daoContact->supplemental_address_1)) {
-      $addressLines[$i] = $daoContact->supplemental_address_1 . '<br>';
+      $addressLines[$i] = $daoContact->supplemental_address_1;
       $i++;
     }
   }
 
   private static function addSupplementalAddress2($daoContact, &$addressLines, &$i) {
     if (!empty($daoContact->supplemental_address_2)) {
-      $addressLines[$i] = $daoContact->supplemental_address_2 . '<br>';
+      $addressLines[$i] = $daoContact->supplemental_address_2;
       $i++;
     }
   }
 
   private static function addStreet($daoContact, &$addressLines, &$i) {
     if (!empty($daoContact->street_address)) {
-      $addressLines[$i] = $daoContact->street_address . '<br>';
+      $addressLines[$i] = $daoContact->street_address;
       $i++;
     }
   }
 
   private static function addPostalCodeAndCity($daoContact, &$addressLines, &$i) {
     if (!empty($daoContact->postal_code) || !empty($daoContact->city)) {
-      $addressLines[$i] = $daoContact->postal_code . ' ' . $daoContact->city . '<br>';
+      $addressLines[$i] = $daoContact->postal_code . ' ' . $daoContact->city;
       $i++;
     }
   }

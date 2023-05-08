@@ -26,7 +26,7 @@ function sixlinesaddress_evaluate_tokens(\Civi\Token\Event\TokenValueEvent $e) {
   foreach ($e->getRows() as $row) {
     /** @var TokenRow $row */
     $row->format('text/html');
-    $row->tokens('contact', 'sixlinesaddress',  $row->context['contactId']);
+    $row->tokens('contact', 'sixlinesaddress',  CRM_Sixlinesaddress_Helper::get($row->context['contactId']));
   }
 }
 
