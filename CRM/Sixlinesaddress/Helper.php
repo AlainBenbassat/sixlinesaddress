@@ -14,9 +14,9 @@ class CRM_Sixlinesaddress_Helper {
     $i = 0;
     $daoContact = self::getContact($contactId);
     self::addName($daoContact, $addressLines, $i);
+    self::addStreet($daoContact, $addressLines, $i);
     self::addSupplementalAddress1($daoContact, $addressLines, $i);
     self::addSupplementalAddress2($daoContact, $addressLines, $i);
-    self::addStreet($daoContact, $addressLines, $i);
     self::addPostalCodeAndCity($daoContact, $addressLines, $i);
     self::addCountry($daoContact, $addressLines, $i);
 
