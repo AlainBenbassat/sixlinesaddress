@@ -26,6 +26,9 @@ class CRM_Sixlinesaddress_Helper {
   private static function getContact($contactId) {
     $sql = "
       select
+        ov.label as prefix,
+        c.first_name,
+        c.last_name,
         c.addressee_custom,
         c.addressee_display,
         a.street_address,
@@ -41,6 +44,8 @@ class CRM_Sixlinesaddress_Helper {
         civicrm_address a on a.contact_id = c.id
       left outer join
         civicrm_country ctry on ctry.id = a.country_id
+      left outer JOIN
+        civicrm_option_value ov on c.prefix_id = ov.value and ov.option_group_id = 6
       where
         c.id = %1
     ";
@@ -58,7 +63,8 @@ class CRM_Sixlinesaddress_Helper {
   }
 
   private static function addName($daoContact, &$addressLines, &$i) {
-    $addressLines[$i] = empty($daoContact->addressee_custom) ? $daoContact->addressee_display : $daoContact->addressee_custom;
+    //$addressLines[$i] = empty($daoContact->addressee_custom) ? $daoContact->addressee_display : $daoContact->addressee_custom;
+    $addressLines[$i] = $daoContact->prefix . ' ' . $daoContact->first_name . ' ' . $daoContact->last_name;
     $i++;
   }
 
