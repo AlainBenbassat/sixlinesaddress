@@ -2,6 +2,10 @@
 
 class CRM_Sixlinesaddress_Helper {
   public static function get($contactId) {
+    if (!self::isValidContactId($contactId)) {
+      return '';
+    }
+
     $addressLines = [
       '',
       '',
@@ -21,6 +25,15 @@ class CRM_Sixlinesaddress_Helper {
     self::addCountry($daoContact, $addressLines, $i);
 
     return implode('<br>', $addressLines);
+  }
+
+  private static function isValidContactId($contactId) {
+    if (!empty($contactId) && $contactId > 0) {
+      return TRUE;
+    }
+    else {
+      return FALSE;
+    }
   }
 
   private static function getContact($contactId) {
